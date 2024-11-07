@@ -4942,5 +4942,8 @@
       "checksum": "fb15602cdb63e9191318b03c81300d12"
     }
   },
-  "users": null
+  "users": null,
+  "packages": {
+    "cran": "https://cloud.r-project.org"
+  }
 }

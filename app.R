@@ -1,3 +1,5 @@
+options(repos = c(CRAN = "https://cloud.r-project.org"))
+
 if (!require(shiny)) { install.packages("shiny") }
 library(shiny)
 
