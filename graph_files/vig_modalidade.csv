@@ -1,0 +1,23 @@
+distribuidora,vigencia(anos),numero de contratos;
+Firme,De 1 a 2,4;
+Firme,De 10 a 11,3;
+Firme,De 12 a 13,1;
+Firme,De 18 a 19,1;
+Firme,De 2 a 3,3;
+Firme,De 3 a 4,3;
+Firme,De 5 a 6,1;
+Firme,De 8 a 9,1;
+Firme,De 9 a 10,5;
+Firme Inflexível,De 1 a 2,4;
+Firme Inflexível,De 10 a 11,10;
+Firme Inflexível,De 2 a 3,2;
+Firme Inflexível,De 3 a 4,7;
+Firme Inflexível,De 4 a 5,7;
+Firme Inflexível,De 5 a 6,1;
+Firme Inflexível,De 6 a 7,4;
+Firme Inflexível,De 8 a 9,14;
+Firme Inflexível,De 9 a 10,2;
+Firme Inflexível; Interruptível,De 2 a 3,1
+Firme Inflexível; Interruptível,De 4 a 5,1
+Interruptível,De 1 a 2,1;
+Interruptível,De 2 a 3,1;
