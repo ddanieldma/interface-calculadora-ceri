@@ -57,27 +57,6 @@ source("calculadora/calculadora_tarifas/server.R")
 source("calculadora/estrutura_tarifaria/ui.R")
 source("calculadora/estrutura_tarifaria/server.R")
 
-# Importando aba de comparação de tarifas.
-# Comercial
-source("calculadora/comparacao_tarifas_comercial/ui.R")
-source("calculadora/comparacao_tarifas_comercial/server.R")
-# Industrial
-source("calculadora/comparacao_tarifas_industrial/ui.R")
-source("calculadora/comparacao_tarifas_industrial/server.R")
-# Residencial
-source("calculadora/comparacao_tarifas_residencial/ui.R")
-source("calculadora/comparacao_tarifas_residencial/server.R")
-
-
-#=============================================================================
-# Importando página de sobre.
-source("sobre.R")
-
-#=============================================================================
-# Importando gráficos.
-source("graficos.R")
-
-
 #===============================================================================
 # Autenticando com credenciais criptografadas
 
@@ -234,154 +213,11 @@ ui <- navbarPage(
              estrutura_tarifaria_ui("estrutura_module")
            )
   ),
-  tabPanel("Tarifas para consumo médio",
-           fluidPage(
-             tabsetPanel(
-               tabPanel("Residencial",
-                        comp_residencial_ui("comp_residencial_module")
-               ),
-               tabPanel("Industrial",
-                        comp_industrial_ui("comp_industrial_module")
-               ),
-               tabPanel("Comercial",
-                        comp_comercial_ui("comp_comercial_module")
-               )
-             )
-           )
-  ),
-  
-  # Página 5
-  tabPanel("Sobre",
-           fluidPage(
-             sobre_ui("sobre_module")
-           )
-  )
 )
 
 #=============================================================================
 # Servidor.
 server <- function(input, output, session) {
-  # Renderize o gráfico na primeira página, opção 1
-  output$grafico_vig <- plotly::renderPlotly({
-    fig_vig
-  })
-  
-  # Renderize o gráfico na primeira página, opção 1
-  output$fig_vigc <- plotly::renderPlotly({
-    fig_vigc
-  })
-  
-  # Renderize o gráfico na primeira página, opção 1
-  output$fig_ass <- plotly::renderPlotly({
-    fig_ass
-  })
-  
-  # Renderize o gráfico na primeira página, opção 1
-  output$fig_cl <- plotly::renderPlotly({
-    fig_cl
-  })
-  
-  # Renderize o gráfico na primeira página, opção 1
-  output$fig_ofertanac <- plotly::renderPlotly({
-    fig_ofertanac
-  })
-  
-  # Renderize o gráfico na primeira página, opção 1
-  output$fig_ofertaimp <- plotly::renderPlotly({
-    fig_ofertaimp
-  })
-  
-  # Renderize o gráfico na primeira página, opção 1
-  output$fig_res_prod <- plotly::renderPlotly({
-    fig_res_prod
-  })
-  
-  # Renderize o gráfico na primeira página, opção 1
-  output$fig_teste <- plotly::renderPlotly({
-    fig_teste
-  })
-  
-  # Renderize o gráfico na primeira página, opção 1
-  output$fig_teste1 <- plotly::renderPlotly({
-    fig_teste1
-  })
-  
-  # Renderize o gráfico na primeira página, opção 1
-  output$fig_ofertaint <- plotly::renderPlotly({
-    fig_ofertaint
-  })
-  
-  # Renderize o gráfico na primeira página, opção 1
-  output$fig_demandaseg <- plotly::renderPlotly({
-    fig_demandaseg
-  })
-  
-  # Renderize o gráfico na primeira página, opção 1
-  output$fig_demandist <- plotly::renderPlotly({
-    fig_demandist
-  })
-  
-  # Renderize o gráfico na primeira página, opção 1
-  output$fig_demandist_st <- plotly::renderPlotly({
-    fig_demandist_st
-  })
-  
-  # Renderize o gráfico na primeira página, opção 1
-  output$fig_consumo70 <- plotly::renderPlotly({
-    fig_consumo70
-  })
-  
-  # Renderize o gráfico na primeira página, opção 1
-  output$fig_balanco <- plotly::renderPlotly({
-    fig_balanco
-  })
-  
-  # Renderize o gráfico na primeira página, opção 1
-  output$fig_balanco_anual <- plotly::renderPlotly({
-    fig_balanco_anual
-  })
-  
-  # Renderize o gráfico na primeira página, opção 1
-  output$fig_qdcreg <- plotly::renderPlotly({
-    fig_qdcreg
-  })
-  
-  # Renderize o gráfico na primeira página, opção 1
-  output$fig_qdcuf <- plotly::renderPlotly({
-    fig_qdcuf
-  })
-  
-  # Renderize o gráfico na primeira página, opção 1
-  output$fig_qdcfor <- plotly::renderPlotly({
-    fig_qdcfor
-  })
-  
-  # Renderize o gráfico na primeira página, opção 1
-  output$fig_qdcdist <- plotly::renderPlotly({
-    fig_qdcdist
-  })
-  
-  # Renderize o gráfico na primeira página, opção 1
-  output$fig_qdcmod <- plotly::renderPlotly({
-    fig_qdcmod
-  })
-  
-  
-  # Distribuição
-  areas_concedidas <- sf::read_sf('areas_concedidas/areas_concedidas.shp')
-  rename(areas_concedidas, Distribuidora = dstrbdr) -> areas_concedidas
-  ##tinha esquecido da distribuidora do RN##
-  areas_concedidas[14,1] <- "Potigás"
-  m <- mapview::mapview(areas_concedidas, zcol = "Distribuidora", layer.name = "Distribuidora")
-  output$map <- renderLeaflet({
-    m@map
-  })
-  
-  # Renderize o gráfico na primeira página, opção 1
-  output$fig_ext <- plotly::renderPlotly({
-    fig_ext
-  })
-  
   #=============================================================================
   # Calculadora de tarifas.
   calculadora_tarifas_server("tarifas_module")
@@ -389,16 +225,6 @@ server <- function(input, output, session) {
   #=============================================================================
   # Estrutura tarifária.
   estrutura_tarifaria_server("estrutura_module")
-  
-  #=============================================================================
-  # Comparação de tarifas.
-  
-  # Aba de residencial
-  comp_residencial_server("comp_residencial_module")
-  # Aba de industrial
-  comp_industrial_server("comp_industrial_module")
-  # Aba de comercial
-  comp_comercial_server("comp_comercial_module")
 }
 
 
