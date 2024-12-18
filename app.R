@@ -93,114 +93,21 @@ gs4_auth(path = credenciais_temp)
 #=============================================================================
 # Definindo a interface do usuário (UI)
 ui <- navbarPage(
-  #theme = shinytheme("cerulean"),  # Escolha um tema base
-  includeCSS("custom.css"),    # Inclua o CSS customizado
+  includeCSS("custom.css"),
   
-  title = "Dashboard do Gás",
-  
-  # Abertura
-  tabPanel("Abertura",
-           fluidPage(
-             #h2("Contratos Vigentes"),
-             tabsetPanel(
-               tabPanel("Contratos Vigentes", h3(class = "text-blue", "Número total de contratos vigentes por ano"),
-                        plotlyOutput('grafico_vig')  # Onde o gráfico será exibido
-               ),
-               tabPanel("Vigências por tipo de Comprador", h3(class = "text-blue", "Vigências por tipo de comprador"),
-                        plotlyOutput("fig_vigc")  # Onde o gráfico será exibido
-               ),   
-               tabPanel("Assinaturas", h3(class = "text-blue", "Quantidade de contratos assinados por tipo de comprador"),
-                        plotlyOutput("fig_ass")  # Onde o gráfico será exibido
-               )
-             ))),
-  
-  # Regulação
-  tabPanel("Regulação",
-           fluidPage(
-             #h2("Conteúdo da Página 2"),
-             tabsetPanel(
-               tabPanel("Assinaturas", h3(class = "text-blue", "Limite para enquadramento como consumidor livre"),
-                        plotlyOutput("fig_cl")  # Onde o gráfico será exibido
-               )
-             )
-           )),
-  
-  # Oferta e Demanda
-  tabPanel("Oferta e Demanda",
-           fluidPage(
-             #h2("Conteúdo da Página 3"),
-             tabsetPanel(
-               tabPanel("Oferta Nacional", h3(class = "text-blue", "Oferta nacional"),
-                        plotlyOutput("fig_ofertanac")  # Onde o gráfico será exibido
-               ),
-               tabPanel("Oferta Internacional", h3(class = "text-blue", " Oferta importada"),
-                        plotlyOutput("fig_ofertaimp")  # Onde o gráfico será exibido
-               ),
-               tabPanel("Reservas", h3(class = "text-blue", "Reservas relativas"),
-                        plotlyOutput("fig_res_prod")  # Onde o gráfico será exibido
-               ),
-               tabPanel("Produção", h3(class = "text-blue", "Produção de petróleo e gás natural (2022)"),
-                        fluidRow(
-                          column(6, plotlyOutput("fig_teste")),   # Coloca o primeiro gráfico na metade esquerda
-                          column(6, plotlyOutput("fig_teste1"))   # Coloca o segundo gráfico na metade direita
-                        )),
-               tabPanel("Oferta Interna", h3(class = "text-blue", "Oferta interna de gás natural"),
-                        plotlyOutput("fig_ofertaint")  # Onde o gráfico será exibido
-               ),
-               tabPanel("Demanda por segmento", h3(class = "text-blue", "Demanda por segmento de consumo"),
-                        plotlyOutput("fig_demandaseg")  # Onde o gráfico será exibido
-               ),
-               tabPanel("Demanda por distribuidora", h3(class = "text-blue", "Demanda por distribuidora (com termelétricas)"),
-                        plotlyOutput("fig_demandist")  # Onde o gráfico será exibido
-               ),
-               tabPanel("Consumo não termelétrico", h3(class = "text-blue", "Consumo por fonte"),
-                        plotlyOutput("fig_consumo70")  # Onde o gráfico será exibido
-               ),
-               tabPanel("Balanço Mensal", h3(class = "text-blue", "Balanço de gás nacional mensal"),
-                        plotlyOutput("fig_balanco")  # Onde o gráfico será exibido
-               ),
-               tabPanel("Balanço Anual", h3(class = "text-blue", "Balanço de gás nacional anual"),
-                        plotlyOutput("fig_balanco_anual")  # Onde o gráfico será exibido
-               )
-             )
-           )),
-  
-  # Comercialização
-  tabPanel("Comercialização",
-           fluidPage(
-             #h2("Conteúdo da Página 4"),
-             tabsetPanel(
-               tabPanel("Quantidade Contratada por Região", h3(class = "text-blue", "Quantidade contratada diarimente por região"),
-                        plotlyOutput("fig_qdcreg")  # Onde o gráfico será exibido
-               ),
-               tabPanel("Quantidade Contratada por UF", h3(class = "text-blue", "Quantidade contratada diarimente por UF"),
-                        plotlyOutput("fig_qdcuf")  # Onde o gráfico será exibido
-               ),
-               tabPanel("Comercialização entre Produtores", h3(class = "text-blue", "Quantidade diária contratada por fornecedor"),
-                        plotlyOutput("fig_qdcfor")  # Onde o gráfico será exibido
-               ),
-               tabPanel("Contratação das Distribuidoras", h3(class = "text-blue", "Quantidade média diariamente contratada por modalidade de contratação"),
-                        plotlyOutput("fig_qdcdist")  # Onde o gráfico será exibido
-               ),
-               tabPanel("Modalidades de Contratação", h3(class = "text-blue", "Quantidade média diariamente contratada por modalidade de contratação"),
-                        plotlyOutput("fig_qdcmod")  # Onde o gráfico será exibido
-               ),
-             )
-           )),
-  
-  # Distribuição
-  tabPanel("Distribuição",
-           fluidPage(
-             #h2("Conteúdo da Página 4"), htmlOutput("map")
-             tabsetPanel(
-               tabPanel("Áreas de Concessão", h3(class = "text-blue", "Áreas de concessão"),
-                        leafletOutput("map")
-               ),
-               tabPanel("Extensão das Redes", h3(class = "text-blue", "Extensões das redes de transporte e distribuição"),
-                        plotlyOutput("fig_ext")  # Onde o gráfico será exibido
-               ),
-             )
-           )),
+  title = div(
+    class = "logo-div",
+    # style = "display: flex; align-items: center; gap: 10px; margin: 0;",
+    tags$a(
+      href = "https://hml-observatoriodogas.fgv.br/",
+      target = "_blank",
+      
+      tags$img(
+        src = "logoplaceholder.png",  # Replace with the path to your logo
+        height = "100%",  # Adjust the height as needed
+      )
+    ),
+  ),
   
   # Abas da calculadora.
   tabPanel("Calculadora de tarifas",

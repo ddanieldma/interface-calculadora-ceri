@@ -207,3 +207,20 @@ td:nth-child(1), th:nth-child(1) {
     display: flex;
     justify-content:space-evenly;
 }
+
+/* Container da logo */
+.logo-div {
+  width: 100%;
+  height: 100%;
+  
+  margin: 0;
+}
+
+.logo-div img {
+  margin: 0;
+}
+
+/* Sobrescrevendo navbar brand, que contém o container da logo */
+.navbar-brand {
+  padding: 0px;
+}
