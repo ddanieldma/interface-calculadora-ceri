@@ -48,6 +48,14 @@ library(shinyjs)
 
 
 #=============================================================================
+# Variáveis
+# Link para o obsrevatório do gás
+link_observatorio <- "https://hml-observatoriodogas.fgv.br/"
+# Caminho da logo
+path_logo <- "logo-observatorio-gas.png"
+
+
+#=============================================================================
 # Imports das abas da calculadora.
 # Importando aba da calculadora de tarifas.
 source("calculadora/calculadora_tarifas/ui.R")
@@ -99,15 +107,23 @@ ui <- navbarPage(
     class = "logo-div",
     # style = "display: flex; align-items: center; gap: 10px; margin: 0;",
     tags$a(
-      href = "https://hml-observatoriodogas.fgv.br/",
+      href = link_observatorio,
       target = "_blank",
       
       tags$img(
-        src = "logoplaceholder.png",  # Replace with the path to your logo
+        src = path_logo,
         height = "100%",  # Adjust the height as needed
       )
     ),
+    tags$a(
+      href = link_observatorio,  # Replace with the second link
+      target = "_blank",  # Opens the link in a new tab
+      tags$span("Home", style = "color: inherit; text-decoration: none; cursor: pointer;")
+    )
   ),
+  
+  # Set window title to avoid warning
+  windowTitle = "Calculadora",
   
   # Abas da calculadora.
   tabPanel("Calculadora de tarifas",
