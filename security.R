@@ -1,11 +1,17 @@
+if (!require(openssl)) { install.packages("openssl") }
+library(openssl)
+
+if (!require(jsonlite)) { install.packages("jsonlite") }
 library(jsonlite)
 
+# Gerando chave e IV
 key <- rand_bytes(32)
 iv <- rand_bytes(16)
 
 print("chave")
 print(key)
 
+# Testando conversão para hexadecimal
 key_hex <- paste0(as.character(key), collapse = "")
 iv_hex <- paste0(as.character(iv), collapse = "")
 print("chave hex")
