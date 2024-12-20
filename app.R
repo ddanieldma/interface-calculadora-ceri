@@ -97,7 +97,7 @@ conteudo_descriptografado <- aes_cbc_decrypt(conteudo_criptografado, chave, iv)
 #                                              iv = iv)
 
 # Formatando para texto
-conteudo_descriptografado_txt <- rawToChar(decrypted_raw_data)
+conteudo_descriptografado_txt <- rawToChar(conteudo_descriptografado)
 # conteudo_descriptografado_txt <- rawToChar(conteudo_descriptografado)
 
 # Colocando no arquivo temporário para ser usado na autenticação
