@@ -11,7 +11,7 @@ calculadora_tarifas_ui <- function(id) {
       add_busy_spinner(),
       tagList(
         titlePanel(
-          h1("Calculadora de tarifas* do mercado de gás natural no Brasil",
+          h1("Calculadora de tarifas (com impostos) por segmento",
              align = "center")
         ),
         fluidRow(
