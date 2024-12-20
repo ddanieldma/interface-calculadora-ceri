@@ -22,11 +22,17 @@ calculadora_tarifas_server <- function(id) {
       get_dados_tarifas(input$classe_consumo_tarifas, input$nivel_consumo_tarifas)
     })
     
-    # Criando gráfico das tarifas.
+    # Criando gráficos das tarifas.
     output$grafico_tarifas <- renderPlotly({
       message("Renderizando gráfico")
       df <- dados_tarifas()
       fig <- cria_grafico_tarifas(df)
+      fig
+    })
+    output$grafico_tarifas_2 <- renderPlotly({
+      message("Renderizando gráfico2")
+      df <- dados_tarifas()
+      fig <- cria_grafico_tarifas_2(df)
       fig
     })
 

@@ -36,11 +36,14 @@ calculadora_tarifas_ui <- function(id) {
                                      align-items: center;"
                  )
           ),
-          column(10,
+          column(5,
                  # UI dinâmica para o botão de download dos dados.
                  # uiOutput(ns("download_button_ui")),
                  # withSpinner(plotlyOutput(ns('grafico_tarifas')), type = 8)
                  plotlyOutput(ns('grafico_tarifas'))
+          ),
+          column(5, 
+                 plotlyOutput(ns('grafico_tarifas_2'))
           )
         ),
         fluidRow(

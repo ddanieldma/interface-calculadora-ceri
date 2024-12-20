@@ -163,6 +163,67 @@ cria_grafico_tarifas <- function (df) {
   return(fig)
 }
 
+# Gráfico 2 de boxplot
+# cria_grafico_tarifas_2 <- function (df) {
+#   df <- df %>% 
+#     rename(Tarifa = "Tarifa\n(em R$/m³)")
+#   
+#   fig <- plot_ly(
+#     data = df,
+#     x = ~Regiao,
+#     y = ~Tarifa,
+#     type = "box",
+#     color = ~Regiao,
+#     colors = paleta_grafico
+#   ) %>%
+#     layout(
+#       title = "Distribuição de Tarifas por Região",
+#       xaxis = list(title = "Região"),
+#       yaxis = list(title = "Tarifa média (em R$/m³)")
+#     )
+#   
+#   return(fig)
+# }
+
+# Gráfico dois apenas com valores de média
+cria_grafico_tarifas_2 <- function (df) {
+    df <- df %>%
+      rename(Tarifa = "Tarifa\n(em R$/m³)")
+  
+  # Calcular a média das tarifas por região
+  df_media <- df %>%
+    group_by(Regiao) %>%
+    summarise(Media_Tarifa = mean(Tarifa, na.rm = TRUE))
+  
+  # Criar o gráfico de barras
+  fig <- plot_ly(
+    data = df_media,
+    x = ~Regiao,
+    y = ~Media_Tarifa,
+    type = "bar",
+    color = ~Regiao,
+    colors = paleta_grafico,
+    text = ~round(Media_Tarifa, 2),  # Mostrar valores arredondados
+    textposition = 'outside'  # Exibir os valores acima das barras
+  ) %>%
+    layout(
+      title = "Tarifa Média por Região",
+      xaxis = list(
+        title = "Região",
+        tickfont = list(family = "Arial", size = 12)
+      ),
+      yaxis = list(
+        title = "Tarifa média (em R$/m³)",
+        tickfont = list(family = "Arial", size = 12),
+        range = c(0, max(df_media$Media_Tarifa) * 1.1)  # Ajustar o range do eixo Y
+      ),
+      margin = list(t = 50, b = 100),  # Ajustar margens
+      showlegend = FALSE  # Ocultar a legenda, já que as regiões estão nos rótulos
+    )
+  
+  return(fig)
+}
+
 # ====================================================
 # Renderizando UI do botão quando os dados estiverem disponíveis.
 renderiza_botao_download <- function(input, output, ns, dados){
