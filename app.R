@@ -3,8 +3,6 @@ options(repos = c(CRAN = "https://cloud.r-project.org"))
 if (!require(shiny)) { install.packages("shiny") }
 library(shiny)
 
-#library(shinythemes)
-
 if (!require(plotly)) { install.packages("plotly") }
 library(plotly)
 
@@ -13,8 +11,6 @@ library(readxl)
 
 if (!require(tidyverse)) { install.packages("tidyverse") }
 library(tidyverse)
-
-#library(shinydashboard)
 
 if (!require(mapview)) { install.packages("mapview") }
 library(mapview)
@@ -39,9 +35,6 @@ library(openssl)
 
 if (!require(jsonlite)) { install.packages("jsonlite") }
 library(jsonlite)
-
-# if (!require(shinycssloaders)) { install.packages("shinycssloaders") }
-# library(shinycssloaders)
 
 if (!require(shinybusy)) { install.packages("shinybusy") }
 library(shinybusy)
@@ -78,27 +71,15 @@ iv_codificado <- Sys.getenv("IV")
 chave <- as.raw(strtoi(substring(chave_codificada, seq(1, nchar(chave_codificada), 2), seq(2, nchar(chave_codificada), 2)), 16L))
 iv <- as.raw(strtoi(substring(iv_codificado, seq(1, nchar(iv_codificado), 2), seq(2, nchar(iv_codificado), 2)), 16L))
 
-# Descodificando de hexadecimal para formato original
-# chave <- base64_decode(chave_codificada)
-# chave <- as.raw(chave)
-# iv <- base64_decode(iv_codificado)
-
 # Lendo arquivo criptografado
 path_arquivo_criptografado <- "credentials/encrypted-key.bin"
 conteudo_criptografado <- readBin(path_arquivo_criptografado, what = "raw", n = file.info(path_arquivo_criptografado)$size)
-# conteudo_criptografado <- readBin(path_arquivo_criptografado,
-#                                   what = "raw",
-#                                   n = file.info(path_arquivo_criptografado)$size)
 
 # Descriptografando credenciais
 conteudo_descriptografado <- aes_cbc_decrypt(conteudo_criptografado, chave, iv)
-# conteudo_descriptografado <- aes_cbc_decrypt(conteudo_criptografado,
-#                                              key = chave,
-#                                              iv = iv)
 
 # Formatando para texto
 conteudo_descriptografado_txt <- rawToChar(conteudo_descriptografado)
-# conteudo_descriptografado_txt <- rawToChar(conteudo_descriptografado)
 
 # Colocando no arquivo temporário para ser usado na autenticação
 credenciais_temp <- tempfile(fileext = ".json")
