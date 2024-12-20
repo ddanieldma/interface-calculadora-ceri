@@ -37,6 +37,9 @@ library(tidyverse)
 if (!require(openssl)) { install.packages("openssl") }
 library(openssl)
 
+if (!require(jsonlite)) { install.packages("jsonlite") }
+library(jsonlite)
+
 # if (!require(shinycssloaders)) { install.packages("shinycssloaders") }
 # library(shinycssloaders)
 
@@ -72,25 +75,32 @@ source("calculadora/estrutura_tarifaria/server.R")
 chave_codificada <- Sys.getenv("CHAVE")
 iv_codificado <- Sys.getenv("IV")
 
+chave <- as.raw(strtoi(substring(chave_codificada, seq(1, nchar(chave_codificada), 2), seq(2, nchar(chave_codificada), 2)), 16L))
+iv <- as.raw(strtoi(substring(iv_codificado, seq(1, nchar(iv_codificado), 2), seq(2, nchar(iv_codificado), 2)), 16L))
+
 # Descodificando de hexadecimal para formato original
-chave <- base64_decode(chave_codificada)
+# chave <- base64_decode(chave_codificada)
 # chave <- as.raw(chave)
-iv <- base64_decode(iv_codificado)
+# iv <- base64_decode(iv_codificado)
 
 # Lendo arquivo criptografado
 path_arquivo_criptografado <- "credentials/encrypted-key.bin"
-conteudo_criptografado <- readBin(path_arquivo_criptografado,
-                                  what = "raw",
-                                  n = file.info(path_arquivo_criptografado)$size)
+conteudo_criptografado <- readBin(path_arquivo_criptografado, what = "raw", n = file.info(path_arquivo_criptografado)$size)
+# conteudo_criptografado <- readBin(path_arquivo_criptografado,
+#                                   what = "raw",
+#                                   n = file.info(path_arquivo_criptografado)$size)
 
 # Descriptografando credenciais
-conteudo_descriptografado <- aes_cbc_decrypt(conteudo_criptografado,
-                                             key = chave,
-                                             iv = iv)
-# Transformando em texto
-conteudo_descriptografado_txt <- rawToChar(conteudo_descriptografado)
+conteudo_descriptografado <- aes_cbc_decrypt(conteudo_criptografado, chave, iv)
+# conteudo_descriptografado <- aes_cbc_decrypt(conteudo_criptografado,
+#                                              key = chave,
+#                                              iv = iv)
 
-# Colocando no arquivo temporário para sre usado na autenticação
+# Formatando para texto
+conteudo_descriptografado_txt <- rawToChar(decrypted_raw_data)
+# conteudo_descriptografado_txt <- rawToChar(conteudo_descriptografado)
+
+# Colocando no arquivo temporário para ser usado na autenticação
 credenciais_temp <- tempfile(fileext = ".json")
 writeLines(conteudo_descriptografado_txt, credenciais_temp)
 
