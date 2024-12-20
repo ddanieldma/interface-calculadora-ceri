@@ -63,7 +63,6 @@ source("calculadora/estrutura_tarifaria/server.R")
 
 #===============================================================================
 # Autenticando com credenciais criptografadas
-
 # Recuperando chave e iv codificados em hexadecimal
 chave_codificada <- Sys.getenv("CHAVE")
 iv_codificado <- Sys.getenv("IV")
@@ -91,42 +90,43 @@ gs4_auth(path = credenciais_temp)
 
 #=============================================================================
 # Definindo a interface do usuário (UI)
-ui <- navbarPage(
+ui <- fluidPage(
   includeCSS("custom.css"),
   
-  title = div(
-    class = "logo-div",
-    # style = "display: flex; align-items: center; gap: 10px; margin: 0;",
-    tags$a(
-      href = link_observatorio,
-      target = "_blank",
-      
-      tags$img(
-        src = path_logo,
-        height = "100%",  # Adjust the height as needed
+  navbarPage(
+    # Colocando logo e botão de home no começo da barra superior
+    title = div(
+      class = "logo-div",
+      # Logo como link para site do observatório
+      tags$a(
+        href = link_observatorio,
+        target = "_blank",
+  
+        tags$img(
+          src = path_logo,
+          height = "100%",
+        )
+      ),
+      # Botão "Home" também como link para página do observatório
+      tags$a(
+        href = link_observatorio,
+        target = "_blank",
+        tags$span("Home", style = "color: inherit; text-decoration: none; cursor: pointer;")
       )
     ),
-    tags$a(
-      href = link_observatorio,  # Replace with the second link
-      target = "_blank",  # Opens the link in a new tab
-      tags$span("Home", style = "color: inherit; text-decoration: none; cursor: pointer;")
-    )
-  ),
   
-  # Set window title to avoid warning
-  windowTitle = "Calculadora",
-  
-  # Abas da calculadora.
-  tabPanel("Calculadora de tarifas",
-           fluidPage(
-             calculadora_tarifas_ui("tarifas_module"),
-           )
-  ),
-  tabPanel("Estrutura tarifária",
-           fluidPage(
-             estrutura_tarifaria_ui("estrutura_module")
-           )
-  ),
+    # Abas da calculadora.
+    tabPanel("Calculadora de tarifas",
+             fluidPage(
+               calculadora_tarifas_ui("tarifas_module"),
+             )
+    ),
+    tabPanel("Estrutura tarifária",
+             fluidPage(
+               estrutura_tarifaria_ui("estrutura_module")
+             )
+    ),
+  )
 )
 
 #=============================================================================
