@@ -42,7 +42,17 @@ obter_dados_estrutura <- function(nome_distribuidora) {
   
   # Renomeando colunas que vamos usar, com exceção da coluna de Parte Fixa que ainda
   # não temos qual a correta.
-  colnames(df)[colnames(df) == "Tarifa com tributos (R$/m³)"] <- 'Tarifa_tributos'
+  
+  # Função para definir qual das duas versões da coluna de tarifas temos
+  com_or_sem_tarifa_column <- function(df) {
+    cols <- colnames(df)
+    cols_with_com_sem <- cols[grepl("\\b(com|sem)\\b", cols, ignore.case = TRUE)]
+    return(cols_with_com_sem)
+  }
+  coluna_de_tarifa = com_or_sem_tarifa_column(df)
+  
+  # E verificando se todas as planilhas tem ao menos uma dessas duas colunas
+  colnames(df)[colnames(df) == coluna_de_tarifa] <- 'Tarifa_tributos'
   colnames(df)[colnames(df) == "Faixa Inicial"] <- 'Faixa_inicial'
   colnames(df)[colnames(df) == "Faixa Final"] <- 'Faixa_final'
   
