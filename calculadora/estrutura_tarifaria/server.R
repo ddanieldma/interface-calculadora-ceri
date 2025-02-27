@@ -20,12 +20,12 @@ obter_dados_estrutura <- function(nome_distribuidora) {
   # Definindo primeira linha do df inicial como novas colunas.
   novos_nomes_colunas <- as.character(df[1, ])
   
-  # Adicionando nome para coluna com categoria da tarifa e retirando coluna com nome vazio.
-  novos_nomes_colunas <- c("Categoria_consumo", novos_nomes_colunas[-1])
-  colnames(df) <- novos_nomes_colunas
-  
   # Retirando primeira linha do df.
   df <- df[-1, ]
+  
+  # Adicionando coluna categoria consumo no começo do dataframe para determinar fim das linhas
+  novos_nomes_colunas <- c("Categoria_consumo", novos_nomes_colunas[-1])
+  colnames(df) <- novos_nomes_colunas
   
   # Retirando linhas que não são dados.
   indice_fim <- which(df$Categoria_consumo == "Dados acabam aqui")
@@ -55,6 +55,11 @@ obter_dados_estrutura <- function(nome_distribuidora) {
   colnames(df)[colnames(df) == coluna_de_tarifa] <- 'Tarifa_tributos'
   colnames(df)[colnames(df) == "Faixa Inicial"] <- 'Faixa_inicial'
   colnames(df)[colnames(df) == "Faixa Final"] <- 'Faixa_final'
+  
+  # Removendo colunas de faixas duplicadas (se existirem)
+  df <- remove_duplicate_faixas(df)
+  
+  print(df)
   
   # Selecionando colunas que já queremos e uma coluna depois da coluna Tarifa_tributos,
   # que é a coluna de Parte fixa que queremos.

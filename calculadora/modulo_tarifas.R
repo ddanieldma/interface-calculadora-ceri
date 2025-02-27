@@ -224,6 +224,31 @@ cria_grafico_tarifas_2 <- function (df) {
   return(fig)
 }
 
+# Função que remove colunas duplicadas de Faixa Inicial e Faixa Final se existirem
+remove_duplicate_faixas <- function(df) {
+  # Verificando se estão realmente duplicadas as colunas
+  faixa_inicial_duplicated <- sum(grepl("Faixa_inicial", names(df))) > 1
+  faixa_final_duplicated <- sum(grepl("Faixa_final", names(df))) > 1
+  
+  print("faixa_inicial_duplicated")
+  print(faixa_inicial_duplicated)
+  print("faixa_final_duplicated")
+  print(faixa_final_duplicated)
+  
+  # Se estiverem
+  if (faixa_inicial_duplicated & faixa_final_duplicated) {
+    # Removendo as 8 primeiras colunas, inúteis
+    columns_to_remove <- 0:8
+    df <- df[, -columns_to_remove]
+    
+    # E adicionando coluna categoria consumo novamente
+    novos_nomes_colunas <- c("Categoria_consumo", colnames(df)[-1])
+    colnames(df) <- novos_nomes_colunas
+  }
+  
+  return (df)
+}
+
 # ====================================================
 # Renderizando UI do botão quando os dados estiverem disponíveis.
 renderiza_botao_download <- function(input, output, ns, dados){
