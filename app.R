@@ -12,9 +12,6 @@ library(readxl)
 if (!require(tidyverse)) { install.packages("tidyverse") }
 library(tidyverse)
 
-# if (!require(mapview)) { install.packages("mapview") }
-# library(mapview)
-
 if (!require(leaflet)) { install.packages("leaflet") }
 library(leaflet)
 
