@@ -9,15 +9,6 @@ library(plotly)
 if (!require(readxl)) { install.packages("readxl") }
 library(readxl)
 
-if (!require(tidyverse)) { install.packages("tidyverse") }
-library(tidyverse)
-
-if (!require(leaflet)) { install.packages("leaflet") }
-library(leaflet)
-
-if (!require(bslib)) { install.packages("bslib") }
-library(bslib)
-
 if (!require(RColorBrewer)) { install.packages("RColorBrewer") }
 library(RColorBrewer)
 
@@ -58,24 +49,16 @@ source("calculadora/calculadora_tarifas/server.R")
 source("calculadora/estrutura_tarifaria/ui.R")
 source("calculadora/estrutura_tarifaria/server.R")
 
+# Função para descriptografar chave
+source("decrypt_key.R")
+
 #===============================================================================
 # Autenticando com credenciais criptografadas
 # Recuperando chave e iv codificados em hexadecimal
 chave_codificada <- Sys.getenv("CHAVE")
 iv_codificado <- Sys.getenv("IV")
 
-chave <- as.raw(strtoi(substring(chave_codificada, seq(1, nchar(chave_codificada), 2), seq(2, nchar(chave_codificada), 2)), 16L))
-iv <- as.raw(strtoi(substring(iv_codificado, seq(1, nchar(iv_codificado), 2), seq(2, nchar(iv_codificado), 2)), 16L))
-
-# Lendo arquivo criptografado
-path_arquivo_criptografado <- "credentials/encrypted-key.bin"
-conteudo_criptografado <- readBin(path_arquivo_criptografado, what = "raw", n = file.info(path_arquivo_criptografado)$size)
-
-# Descriptografando credenciais
-conteudo_descriptografado <- aes_cbc_decrypt(conteudo_criptografado, chave, iv)
-
-# Formatando para texto
-conteudo_descriptografado_txt <- rawToChar(conteudo_descriptografado)
+conteudo_descriptografado_txt <- decript_key(chave_codificada, iv_codificado)
 
 # Colocando no arquivo temporário para ser usado na autenticação
 credenciais_temp <- tempfile(fileext = ".json")
