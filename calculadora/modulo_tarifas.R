@@ -64,6 +64,9 @@ get_dados_tarifas <- function(valor_classe, valor_nivel){
     # Renomeando coluna de tarifa.
     rename("Tarifa\n(em R$/m³)" = Tarifa)
   
+  # Adicionando coluna com estado da distribuidora
+  df$Estado <- gsub(".*\\((.*)\\).*", "\\1", df$Distribuidora)
+  
   return(df)
 }
 
@@ -116,14 +119,58 @@ cria_output_tabelas <- function(ns, dados_tarifas, output) {
 
 # ====================================================
 # Cria o gráfico da aba de tarifas.
-cria_grafico_tarifas <- function (df) {
+cria_grafico_tarifas <- function (df, x_axis) {
   df <- df %>% 
     rename(Tarifa = "Tarifa\n(em R$/m³)")
   
+  x_column <- switch(x_axis,
+                     "Distribuidora" = "Distribuidora",
+                     "Estado" = "Estado",
+                     "Região" = "Regiao")
+  
+  
+  if(x_axis == 'Estado'){
+    # Agrupando dados por estado
+    df_media <- df %>%
+      group_by(Estado) %>%
+      summarise(Tarifa = mean(Tarifa, na.rm = TRUE))
+    
+    # Adicionando coluna região de volta
+    df_media <- df %>%
+      select(Estado, Regiao) %>%
+      distinct() %>%  # Ensure only unique Estado-Region pairs
+      left_join(df_media, by = "Estado")
+  
+    # Definindo estilização do gráfico
+    x_axis_title <- "Estado"
+    y_axis_title <- "Tarifa média (em R$/m³)"
+    title_text <- "Tarifa média por estado <br><sup>em R$/m³</sup>"
+  }
+  else if(x_axis == 'Região'){
+    df_media <- df %>%
+      group_by(Regiao) %>%
+      summarise(Tarifa = mean(Tarifa, na.rm = TRUE))
+    
+    x_axis_title <- "Região"
+    y_axis_title <- "Tarifa média (em R$/m³)"
+    title_text <- "Tarifa média por região <br><sup>em R$/m³</sup>"
+  }
+  else {
+    # For "Distribuidora" option
+    df_media <- df
+    
+    x_axis_title <- "Distribiudora"
+    y_axis_title <- "Tarifa (em R$/m³)"
+    title_text <- "Tarifa por distribuidora <br><sup>em R$/m³</sup>"
+  }
+  
+  print("df_media")
+  print(df_media)
+  
   fig <- plot_ly() %>% 
     add_bars(
-      data = df, 
-      x = ~Distribuidora, 
+      data = df_media, 
+      x = ~get(x_column), 
       y = ~Tarifa, 
       color = ~Regiao, 
       colors = paleta_grafico,
@@ -135,17 +182,18 @@ cria_grafico_tarifas <- function (df) {
     ) %>% 
     layout(
       title = list(
-        text = "Tarifa por distribuidora <br><sup>em R$/m³</sup>",
+        # text = "Tarifa por distribuidora <br><sup>em R$/m³</sup>",
+        text = title_text,
         font = list(family = "Arial", size = 16, color = "#333")
       ),
       xaxis = list(
-        title = list(text = "Distribuidora", standoff = 25),
+        title = list(text = x_axis_title, standoff = 25),
         categoryorder = "total descending",
         tickfont = list(family = "Arial", size = 12),
         tickangle = -45  # Angle the labels for better readability
       ),
       yaxis = list(
-        title = "Tarifa média (em R$/m³)",
+        title = y_axis_title,
         tickfont = list(family = "Arial", size = 12),
         range = c(0, max(df$Tarifa) * 1.1)  # Slightly increase the y-axis range
       ),
@@ -162,28 +210,6 @@ cria_grafico_tarifas <- function (df) {
 
   return(fig)
 }
-
-# Gráfico 2 de boxplot
-# cria_grafico_tarifas_2 <- function (df) {
-#   df <- df %>% 
-#     rename(Tarifa = "Tarifa\n(em R$/m³)")
-#   
-#   fig <- plot_ly(
-#     data = df,
-#     x = ~Regiao,
-#     y = ~Tarifa,
-#     type = "box",
-#     color = ~Regiao,
-#     colors = paleta_grafico
-#   ) %>%
-#     layout(
-#       title = "Distribuição de Tarifas por Região",
-#       xaxis = list(title = "Região"),
-#       yaxis = list(title = "Tarifa média (em R$/m³)")
-#     )
-#   
-#   return(fig)
-# }
 
 # Gráfico dois apenas com valores de média
 cria_grafico_tarifas_2 <- function (df) {
