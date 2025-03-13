@@ -59,11 +59,8 @@ obter_dados_estrutura <- function(nome_distribuidora) {
   # Removendo colunas de faixas duplicadas (se existirem)
   df <- remove_duplicate_faixas(df)
   
-  print(df)
-  
   # Selecionando colunas que já queremos e uma coluna depois da coluna Tarifa_tributos,
   # que é a coluna de Parte fixa que queremos.
-  
   df <- df %>%
     select(one_of("Categoria_consumo", "Faixa_inicial", "Faixa_final", "Tarifa_tributos"),
            which(names(df) == 'Tarifa_tributos') + 1)
@@ -145,7 +142,6 @@ estrutura_tarifaria_server <- function(id) {
         write.csv(df_estrutura_tarifaria(), file, row.names = FALSE)
       }
     )
-    
     
     # ====================================================
     # Tabelas

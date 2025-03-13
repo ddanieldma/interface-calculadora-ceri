@@ -1,9 +1,7 @@
 # UI da aba de estrutura tarifária.
 
 library(shiny)
-        
-#===============================================================================
-# UI
+
 estrutura_tarifaria_ui <- function(id) {
   ns <- NS(id)
   
@@ -30,18 +28,4 @@ estrutura_tarifaria_ui <- function(id) {
       )
     )
   )
-  
-  # tabPanel(
-  #   "Estrutura tarifária",
-  #   fluidPage(
-  #     add_busy_spinner(),
-      
-      # tagList(
-      #   # Inicializando shinyjs
-      #   # useShinyjs(),
-      #   
-      #   
-      #   )
-    #   )
-    # )
 }
