@@ -23,19 +23,34 @@ calculadora_tarifas_server <- function(id) {
     })
     
     # Criando gráficos das tarifas.
-    output$grafico_tarifas <- renderPlotly({
-      message("Renderizando gráfico")
-      df <- dados_tarifas()
-      fig <- cria_grafico_tarifas(df)
-      fig
+    # output$grafico_tarifas <- renderPlotly({
+    #   message("Renderizando gráfico")
+    #   df <- dados_tarifas()
+    #   fig <- cria_grafico_tarifas(df, input$eixo_x_calculadora)
+    #   fig
+    # })
+    
+    # Observe for changes in the x-axis dropdown
+    observe({
+      # This will trigger when either the data or the dropdown changes
+      req(dados_tarifas())
+      req(input$eixo_x_calculadora)
+      
+      # Map UI selection to function parameter
+      x_axis <- switch(input$eixo_x_calculadora,
+                       "Distribuidora" = "Distribuidora",
+                       "Estado" = "Estado",
+                       "Região" = "Região")
+      
+      # Update the plot
+      output$grafico_tarifas <- renderPlotly({
+        message("Renderizando gráfico com eixo x:", x_axis)
+        df <- dados_tarifas()
+        fig <- cria_grafico_tarifas(df, x_axis)
+        fig
+      })
     })
-    output$grafico_tarifas_2 <- renderPlotly({
-      message("Renderizando gráfico2")
-      df <- dados_tarifas()
-      fig <- cria_grafico_tarifas_2(df)
-      fig
-    })
-
+    
     renderiza_botao_download(input, output, ns, dados_tarifas)
     
     # Criando o handler para o download dos dados.

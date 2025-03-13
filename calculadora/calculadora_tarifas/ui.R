@@ -17,6 +17,7 @@ calculadora_tarifas_ui <- function(id) {
         fluidRow(
           column(2,
                  tags$div(
+                   class = 'inputs-panel',
                    h4("Tarifas de distribuidoras"),
                    wellPanel(
                      selectInput(ns("classe_consumo_tarifas"),
@@ -28,23 +29,22 @@ calculadora_tarifas_ui <- function(id) {
                      div(
                        actionButton(ns("update_tarifas"), "Criar visualizações"),
                        style = "display: flex; justify-content: center;"
+                     ),
+                     div(
+                       selectInput(ns("eixo_x_calculadora"),
+                                   "Eixo x do gráfico",
+                                   choices = c("Distribuidora", "Estado", "Região")),
+                       style = "margin-top: 10px"
                      )
-                   ),     
-                   style = 
-                     "display: flex;
-                                     flex-direction: column;
-                                     align-items: center;"
+                   )
                  )
           ),
-          column(5,
+          column(10,
                  # UI dinâmica para o botão de download dos dados.
                  # uiOutput(ns("download_button_ui")),
                  # withSpinner(plotlyOutput(ns('grafico_tarifas')), type = 8)
                  plotlyOutput(ns('grafico_tarifas'))
           ),
-          column(5, 
-                 plotlyOutput(ns('grafico_tarifas_2'))
-          )
         ),
         fluidRow(
           column(12,

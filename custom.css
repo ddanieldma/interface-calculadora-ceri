@@ -234,3 +234,11 @@ td:nth-child(1), th:nth-child(1) {
 .container-fluid>.navbar-header {
   margin-right: 5px !important;
 }
+
+/* Inputs da aba de calculadora tarifária */
+.inputs-panel{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 20px !important;
+}
